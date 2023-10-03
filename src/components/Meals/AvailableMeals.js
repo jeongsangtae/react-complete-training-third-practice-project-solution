@@ -7,14 +7,21 @@ import classes from "./AvailableMeals.module.css";
 const AvailableMeals = () => {
   const [meals, setMeals] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchMeals = async () => {
       setIsLoading(true);
+      setError(null);
       try {
         const response = await fetch(
           "https://food-ordering-app-backen-565f9-default-rtdb.asia-southeast1.firebasedatabase.app/meals.json"
         );
+
+        if (!response.ok) {
+          throw new Error("Something went wrong!");
+        }
+
         const data = await response.json();
 
         const loadedMeals = [];
@@ -28,17 +35,23 @@ const AvailableMeals = () => {
           });
         }
         setMeals(loadedMeals);
-      } catch {}
+      } catch (error) {
+        setError(error.message);
+      }
       setIsLoading(false);
     };
 
     fetchMeals();
   }, []);
 
-  let loadingContent = <p>Not Meals...</p>;
+  let content = <p>Not Meals...</p>;
+
+  if (error) {
+    content = <p>{error}</p>;
+  }
 
   if (isLoading) {
-    loadingContent = <p>Loading...</p>;
+    content = <p>Loading...</p>;
   }
 
   const mealsList = meals.map((meal) => {
@@ -57,7 +70,7 @@ const AvailableMeals = () => {
     <section className={classes.meals}>
       <Card>
         <ul>{mealsList}</ul>
-        {isLoading && loadingContent}
+        {content}
       </Card>
     </section>
   );
