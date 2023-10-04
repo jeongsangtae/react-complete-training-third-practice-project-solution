@@ -7,6 +7,11 @@ const Chechout = (props) => {
   const [postalInput, setPostalInput] = useState("");
   const [cityInput, setCityInput] = useState("");
 
+  const nameIsValid = nameInput.trim() === "";
+  const streetIsValid = streetInput.trim() === "";
+  const postalIsValid = postalInput.trim().length !== 5;
+  const cityIsValid = cityInput.trim() === "";
+
   const submitHandler = (event) => {
     event.preventDefault();
 
@@ -34,9 +39,14 @@ const Chechout = (props) => {
     setCityInput(event.target.value);
   };
 
+  const nameInputValid = nameIsValid ? classes.invalid : "";
+  const streetInputValid = streetIsValid ? classes.invalid : "";
+  const postalInputValid = postalIsValid ? classes.invalid : "";
+  const cityInputValid = cityIsValid ? classes.invalid : "";
+
   return (
     <form onSubmit={submitHandler}>
-      <div className={classes.control}>
+      <div className={`${classes.control} ${nameInputValid}`}>
         <label htmlFor="username">Your Name</label>
         <input
           type="text"
@@ -44,8 +54,9 @@ const Chechout = (props) => {
           value={nameInput}
           onChange={nameHandler}
         />
+        {nameInputValid && <p>Name is not empty</p>}
       </div>
-      <div className={classes.control}>
+      <div className={`${classes.control} ${streetInputValid}`}>
         <label htmlFor="street">Street</label>
         <input
           type="text"
@@ -53,8 +64,9 @@ const Chechout = (props) => {
           value={streetInput}
           onChange={streetHandler}
         />
+        {streetInputValid && <p>Street is not empty</p>}
       </div>
-      <div className={classes.control}>
+      <div className={`${classes.control} ${postalInputValid}`}>
         <label htmlFor="post-code">Postal Code</label>
         <input
           type="text"
@@ -62,10 +74,12 @@ const Chechout = (props) => {
           value={postalInput}
           onChange={postalHandler}
         />
+        {postalInputValid && <p>Postal is not empty</p>}
       </div>
-      <div className={classes.control}>
+      <div className={`${classes.control} ${cityInputValid}`}>
         <label htmlFor="city">City</label>
         <input type="text" id="city" value={cityInput} onChange={cityHandler} />
+        {cityInputValid && <p>City is not empty</p>}
       </div>
 
       <div className={classes.actions}>
