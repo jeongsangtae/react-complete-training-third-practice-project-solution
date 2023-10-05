@@ -21,6 +21,13 @@ const Chechout = (props) => {
     setStreetInput("");
     setPostalInput("");
     setCityInput("");
+
+    props.onConfirm({
+      name: nameInput,
+      street: streetInput,
+      postalCode: postalInput,
+      city: cityInput,
+    });
   };
 
   const nameHandler = (event) => {

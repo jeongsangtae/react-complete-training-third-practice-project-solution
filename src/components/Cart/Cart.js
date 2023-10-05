@@ -26,6 +26,19 @@ const Cart = (props) => {
     setCheckoutModal(true);
   };
 
+  const submitOrderHandler = (userData) => {
+    fetch(
+      "https://food-ordering-app-backen-565f9-default-rtdb.asia-southeast1.firebasedatabase.app/orders.json",
+      {
+        method: "POST",
+        body: JSON.stringify({ user: userData, orderedItem: cartCtx.items }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+  };
+
   const cartItems = (
     <ul className={classes["cart-items"]}>
       {cartCtx.items.map((item) => {
@@ -63,7 +76,9 @@ const Cart = (props) => {
         <span>Total Amount</span>
         <span>{totalAmount}</span>
       </div>
-      {checkoutModal && <Chechout onClose={props.onClose} />}
+      {checkoutModal && (
+        <Chechout onConfirm={submitOrderHandler} onClose={props.onClose} />
+      )}
       {!checkoutModal && actionButton}
     </Modal>
   );
