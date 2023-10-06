@@ -12,47 +12,48 @@ const AvailableMeals = () => {
   useEffect(() => {
     const fetchMeals = async () => {
       setError(null);
-      try {
-        const response = await fetch(
-          "https://food-ordering-app-backen-565f9-default-rtdb.asia-southeast1.firebasedatabase.app/meals.json"
-        );
+      const response = await fetch(
+        "https://food-ordering-app-backen-565f9-default-rtdb.asia-southeast1.firebasedatabase.app/meals.json"
+      );
 
-        if (!response.ok) {
-          throw new Error("Something went wrong!");
-        }
-
-        const data = await response.json();
-
-        const loadedMeals = [];
-
-        for (const key in data) {
-          loadedMeals.push({
-            id: key,
-            name: data[key].name,
-            description: data[key].description,
-            price: data[key].price,
-          });
-        }
-        setMeals(loadedMeals);
-      } catch (error) {
-        setError(error.message);
+      if (!response.ok) {
+        throw new Error("Something went wrong!");
       }
+
+      const data = await response.json();
+
+      const loadedMeals = [];
+
+      for (const key in data) {
+        loadedMeals.push({
+          id: key,
+          name: data[key].name,
+          description: data[key].description,
+          price: data[key].price,
+        });
+      }
+      setMeals(loadedMeals);
       setIsLoading(false);
     };
 
-    fetchMeals();
+    fetchMeals().catch((error) => {
+      setIsLoading(false);
+      setError(error.message);
+    });
   }, []);
-
-  let content = <p>Not Meals...</p>;
-
-  if (error) {
-    content = <p>{error}</p>;
-  }
 
   if (isLoading) {
     return (
       <section className={classes.MealsLoading}>
         <p>Loading...</p>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className={classes.MealsError}>
+        <p>{error}</p>
       </section>
     );
   }
@@ -73,7 +74,6 @@ const AvailableMeals = () => {
     <section className={classes.meals}>
       <Card>
         <ul>{mealsList}</ul>
-        {content}
       </Card>
     </section>
   );
