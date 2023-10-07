@@ -90,7 +90,9 @@ const Chechout = (props) => {
       </div>
 
       <div className={classes.actions}>
-        <button onClick={props.onClose}>Cancel</button>
+        <button type="button" onClick={props.onClose}>
+          Cancel
+        </button>
         <button className={classes.submit}>Confirm</button>
       </div>
     </form>
