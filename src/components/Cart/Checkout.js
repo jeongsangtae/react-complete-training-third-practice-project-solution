@@ -48,12 +48,12 @@ const Chechout = (props) => {
     }
 
     // Cart Data submit
-    // props.onConfirm({
-    //   name: nameInput,
-    //   street: streetInput,
-    //   postalCode: postalInput,
-    //   city: cityInput,
-    // });
+    props.onConfirm({
+      name: enteredName,
+      street: enteredStreet,
+      city: enteredCity,
+      postalCode: enteredPostalCode,
+    });
   };
 
   const nameControlClasses = `${classes.control} ${
